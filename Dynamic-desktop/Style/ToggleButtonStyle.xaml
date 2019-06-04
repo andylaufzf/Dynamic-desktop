@@ -1,0 +1,201 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Dyd">
+    
+    <!--窗口聚焦样式-->
+    <Style x:Key="FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource ThemeColor}" StrokeThickness="1" StrokeDashArray="200 1"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--圆形按钮默认颜色-->
+    <SolidColorBrush x:Key="ThumbDefaultBack" Color="#f0f0f0"></SolidColorBrush>
+    <Color x:Key="IndigoPrimary300">#7986cb</Color>
+    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource IndigoPrimary300}"/>
+
+    <!--设置ToggleButton的样式-->
+    <Style TargetType="{x:Type ToggleButton}">
+        <!--ToggleButton的Foreground的属性的值为{DynamicResource ThemeColor}-->
+        <!--Foreground: 前景色-->
+        <Setter Property="Foreground" Value="{DynamicResource ThemeColor}" />
+        <!--BorderThickness:边框宽度-->
+        <Setter Property="BorderThickness" Value="1"/>
+        <!--Padding: 内边距-->
+        <Setter Property="Padding" Value="1"/>
+        <!--模板-->
+        <Setter Property="Template">
+            <!--设置模板具体值-->
+            <Setter.Value>
+                <!--控制控件外观和结构  TargetType: 针对类型-->
+                <!--ControlTemplate类的作用是重新定义控件的视觉效果和触发状态。控件在获取焦点或者被按下时，一般会显示出不同的状态，以便于用户区分。系统控件的视觉状态都是事先已经设定好的。这样做的好处是，可以复用已有的代码，大大节省了UI界面开发周期。有时候，用户需要为控件设定自己想要的视觉效果，比如：按钮控件的皮肤，指定为自定义的风格。这时，就需要借助ControlTemplate类。-->
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <!--此模板作用域内可用资源集合-->
+                    <ControlTemplate.Resources>
+                        <!--SineEase  通过指定EasingMode控制动画加速、 减速  Key:m-->
+                        <SineEase x:Key="RippleEasingFunction" EasingMode="EaseInOut"/>
+                        <!--Storyboard 故事板，一个容器时间线-->
+                        <Storyboard x:Key="ShowRipple">
+                            <!--对于RippleThumb透明度Opacity的动画效果-->
+                            <DoubleAnimation Storyboard.TargetName="RippleThumb" Storyboard.TargetProperty="Opacity"
+                                             EasingFunction="{StaticResource RippleEasingFunction}"
+                                             To="0.26" Duration="0"/>
+                            <!--设置X轴缩放-->
+                            <DoubleAnimation Storyboard.TargetName="RippleThumb" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                             EasingFunction="{StaticResource RippleEasingFunction}"
+                                             From="1" To="4.0" Duration="0:0:0.2"/>
+                            <DoubleAnimation Storyboard.TargetName="RippleThumb" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                             EasingFunction="{StaticResource RippleEasingFunction}"
+                                             From="1" To="2.5" Duration="0:0:0.2"/>
+                        </Storyboard>
+                        <!--隐藏动画-->
+                        <Storyboard x:Key="HideRipple">
+                            <!--将透明度设置为全透明-->
+                            <DoubleAnimation Storyboard.TargetName="RippleThumb" Storyboard.TargetProperty="Opacity"
+                                             EasingFunction="{StaticResource RippleEasingFunction}"
+                                             To="0" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <!--Viewbox 定义一个内容修饰器，以便拉伸或缩放单一子项使其填满可用的控件-->
+                    <Viewbox Width="34">
+                        <!--VisualStateManager 视觉状态状态器，包含多个视觉状态组-->
+                        <VisualStateManager.VisualStateGroups>
+                            <!--VisualStateGroup 视觉状态组，包含多个互斥的视觉状态-->
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualStateGroup.Transitions>
+                                    <!--VisualTransition 表示当控件从一个状态转换到另一个时出现的可视行为-->
+                                    <!--打开动作-->
+                                    <VisualTransition From="Unchecked" To="Checked">
+                                        <Storyboard>
+                                            <!--DoubleAnimationUsingKeyFrames Double类型的关键帧动画类型,包含 DoubleKeyFrame 对象的集合,通过一组关键帧控制动画的播放  TargetProperty:应进行动画处理的属性  TargetName:要进行动画处理的对象的名称-->
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ThumbHolder">
+                                                <!--EasingDoubleKeyFrame 使缓动函数与关键帧动画相关联  KeyTime:关键帧时间-->
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="23.5">
+                                                    <!--EasingFunction 设置缓动函数-->
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <!--QuadraticEase 缓动函数f(t) = t*t-->
+                                                        <QuadraticEase EasingMode="EaseOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <!--关闭动作-->
+                                    <VisualTransition From="Checked" To="Unchecked">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ThumbHolder">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="23.5"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <!--VisualState  处于特定状态时，空间的可视外观-->
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <!--Duration:持续时间-->
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ThumbHolder"
+                                                         Duration="0" To="23.5" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ThumbHolder"
+                                                         Duration="0" To="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid>
+                            <!--
+                            ***************************************************************
+                            PS1:继承了Control类的控件都有Background属性，比如Button, Grid等。
+                                但Rectangle并没有继承Control类，而是Shape类的子类。所以并没有Control中的Background的属性，相反，有一个类似的Fill属性。
+                                虽然功能是相似的，但从英语使用习惯上分析，对于Shape类，Fill比Background更合适，更容易理解。
+                            ***************************************************************
+                            -->
+                            <!--Rectangle 存储一组整数，共四个，表示一个矩形的位置和大小    Fill:内部上色   Stroke:边框  RadiusY:令矩形边角改为圆角的椭圆半径( X 轴)  Opacity:不透明度-->
+                            <Rectangle x:Name="Track"
+                                      Width="40" Height="15" Margin="4.211,5,4.211,0" Fill="Black" Stroke="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top"  RadiusY="7.5" RadiusX="7.5" Opacity="0.26"/>
+                            <Grid x:Name="ThumbHolder"
+                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <!--Ellipse 椭圆  RenderTransformOrigin:设置由 RenderTransform 声明的任何可能呈现转换的中心点-->
+                                <Ellipse x:Name="RippleThumb"
+                                         Fill="{DynamicResource PrimaryHueLightBrush}"
+                                         Height="25" Width="25"
+                                         Opacity="0.26"
+                                         Margin="0"
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         RenderTransformOrigin="0.5,0.5">
+                                    <!--RenderTransform 设置影响此元素呈现位置的转换信息-->
+                                    <Ellipse.RenderTransform>
+                                        <!--在 二维 x-y 坐标系统内缩放对象  ScaleX:设置 x 轴缩放比例-->
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                                <!--AdornerDecorator 一个不可见的平面，用于承载adorners-->
+                                <AdornerDecorator>
+                                    <!--CacheMode 用以缓存UIelement-->
+                                    <AdornerDecorator.CacheMode>
+                                        <!--BitmapCache 位图缓存  EnableClearType:指示是否与 ClearType 激活呈现位图  SnapsToDevicePixels:指示是否将该位图呈现像素对齐-->
+                                        <BitmapCache EnableClearType="True" SnapsToDevicePixels="True"/>
+                                    </AdornerDecorator.CacheMode>
+                                    <Ellipse x:Name="Thumb"
+                                             Fill="{StaticResource ThumbDefaultBack}" Stroke="{x:Null}" 
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             Width="25" Height="25"
+                                             Margin="0,0,0,0"
+                                             RenderTransformOrigin="0.5,0.5"
+                                             Effect="{DynamicResource MaterialDesignShadowDepth1}">
+                                    </Ellipse>
+                                </AdornerDecorator>
+                                <Grid.RenderTransform>
+                                    <!--TranslateTransform 平移变换-->
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                        </Grid>
+                    </Viewbox>
+                    <!--TriggerBase 用于指定内的条件值的基类 Style 对象,Triggers TriggerBase对象的集合  -->
+                    <ControlTemplate.Triggers>
+                        <!--Trigger 触发器-->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Thumb" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+                            <Setter TargetName="Track" Property="Fill" Value="{DynamicResource PrimaryHueLightBrush}" />
+                        </Trigger>
+                        <Trigger Property="Button.IsDefaulted" Value="true"/>
+                        <Trigger Property="IsMouseOver" Value="true"/>
+                        <Trigger Property="IsPressed" Value="true">
+                            <!--EnterActions 触发器对象变为活动状态时应用的 TriggerAction 对象的集合-->
+                            <Trigger.EnterActions>
+                                <!--BeginStoryboard 一个触发器操作，该操作开始 Storyboard 并将其动画分配到目标对象和属性-->
+                                <BeginStoryboard Storyboard="{StaticResource ShowRipple}"/>
+                            </Trigger.EnterActions>
+                            <!--ExitActions 触发器对象变为非活动状态时应用的 TriggerAction 对象的集合-->
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource HideRipple}"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Thumb" Property="Fill" Value="#BDBDBD" />
+                            <Setter TargetName="Track" Property="Fill">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="Black" Opacity=".12" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,13 @@
+﻿<Window x:Class="Dyd.FullWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dyd"
+        mc:Ignorable="d"
+        Title="FullWindow" Height="416" Width="740" Loaded="Window_Loaded" MouseDoubleClick="Window_MouseDoubleClick" SizeChanged="Window_SizeChanged" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <!--用来全屏播放的视频窗口-->
+        <MediaElement x:Name="media"  Height="254" Width="460" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" MediaEnded="media_MediaEnded" LoadedBehavior="Manual"/>
+    </Grid>
+</Window>
