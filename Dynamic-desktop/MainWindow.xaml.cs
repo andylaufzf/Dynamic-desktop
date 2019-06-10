@@ -31,6 +31,9 @@ namespace Dyd
             media.UnloadedBehavior = MediaState.Manual;//Manual: 用于手动控制 MediaElement 的状态。 可以使用交互式方法（如 Play 和 Pause）;
 
             fullWindow = new FullWindow();
+
+            //对Slider控件添加事件：MouseLeftButtonUpEvent: 鼠标离开按钮事件
+            volume.AddHandler(Slider.MouseLeftButtonUpEvent, new MouseButtonEventHandler(volume_MouseLeftButtonUp), true);
         }
 
         //壁纸窗口
@@ -42,6 +45,16 @@ namespace Dyd
         //托盘图标
         private static NotifyIcon trayIcon; //NotifyIcon类 指定可在通知区域创建图标的组件。 NotifyIcon类不能被继承。
 
+
+        /// <summary>
+        /// 桌面音量控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void volume_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            fullWindow.media.Volume = volume.Value;
+        }
         /// <summary>
         /// 移除通知栏图标，释放资源
         /// </summary>
@@ -112,6 +125,10 @@ namespace Dyd
 
             trayIcon.ContextMenu = menu;    //设置NotifyIcon的右键弹出菜单
         }
+
+        /**********************************************
+        * 音量处理
+        **********************************************/
         /// <summary>
         /// 窗体加载处理
         /// </summary>
@@ -126,11 +143,11 @@ namespace Dyd
         /**********************************************
          * 事件处理
          **********************************************/
-         /// <summary>
-         /// 单击通知栏图标
-         /// </summary>
-         /// <param name="sender"></param>
-         /// <param name="e"></param>
+        /// <summary>
+        /// 单击通知栏图标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TrayIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             ///将当前窗体设为可见

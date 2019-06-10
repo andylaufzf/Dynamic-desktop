@@ -29,7 +29,7 @@
         <!--Border 在另一个元素四周绘制边框或背景  BorderBrush:描述外部边框颜色  BorderThickness:描述矩形边框的粗细  HorizontalAlignment:水平对齐方式  VerticalAlignment:垂直对齐-->
         <Border Height="225" Width="400" BorderBrush="Black" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Top">
             <!--MediaElement 包含音频和/或视频的控件  Name：标识名称  Volume：音量  Source:媒体源  LoadedBehavior:获取或设置媒体的加载行为 MediaState-->
-            <MediaElement x:Name="media" Height="225" Width="400" Volume="1" Source="" MouseDown="media_MouseDown" LoadedBehavior="Manual"/>
+            <MediaElement x:Name="media" Height="225" Width="400" Volume="{Binding ElementName=volume,Path=Value}" Source="" MouseDown="media_MouseDown" LoadedBehavior="Manual"/>
         </Border>
 
         <!--GroupBox 用于创建具有针对用户界面(UI)内容的边框和标题的容器  Header:标头-->
@@ -41,7 +41,7 @@
                 <ToggleButton Height="25" Width="40" x:Name="btnFull" Margin="75,10,0,0" Foreground="#FF16DCF0" BorderBrush="#FFA8A8A8" Background="#CC119EDA"  VerticalAlignment="Top" HorizontalAlignment="Left"  Checked="btnFull_Checked" Unchecked="btnFull_Unchecked" RenderTransformOrigin="0.6,-0.76" IsChecked="True"/>
                 <Label Content="音量" Width="81" Height="25" Margin="10,36,0,0"  HorizontalAlignment="Left"  VerticalAlignment="Top"/>
                 <!--Slider 滑块  Value:初始值设置-->
-                <Slider  Width="80" Height="20"  Margin="80,36,0,0" Value="80" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <Slider x:Name="volume" Width="80" Height="20" Maximum="1" Margin="80,36,0,0" Value="0.5" HorizontalAlignment="Left"  VerticalAlignment="Top" IsMoveToPointEnabled="True"/>
                 <!--Button 按钮 -->
                 <Button Content="选择视频" Margin="225,80,85,10" Click="SelectVideo"/>
                 <Button Content="设为壁纸" Margin="310,80,0,10" Click="SetWallpaper"/>
